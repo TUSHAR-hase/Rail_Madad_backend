@@ -39,7 +39,7 @@ export const getstatus=async (req, res) => {
     // Return the complaint status
     res.status(200).json({
       complaintId: complaint.complaintId,
-      acknowledgmentReceived: complaint.acknowledgmentReceived,
+     resolved: complaint.resolved,
       // Include other relevant fields
     });
   } catch (error) {
