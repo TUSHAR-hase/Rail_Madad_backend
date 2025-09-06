@@ -6,7 +6,7 @@ import twilio from "twilio";
 import Complaint from "../schemas/complaintschema.js";
 import Staff from "../schemas/staffschema.js";
 import User from "../schemas/userschemas.js";
-// import { VoiceResponse } from 'twilio';
+
 const { VoiceResponse } = twilio;
 
 // Initialize Twilio client with proper error handling
@@ -37,11 +37,11 @@ export const getstatus=async (req, res) => {
       return res.status(404).json({ error: 'Complaint not found' });
     }
 
-    // Return the complaint status
+   
     res.status(200).json({
       complaintId: complaint.complaintId,
      resolved: complaint.resolved,
-      // Include other relevant fields
+      
     });
   } catch (error) {
     console.error('Server error:', error);
@@ -473,7 +473,7 @@ async function retryCall(complaintId) {
     if (complaint.details) complaintDetails += `Vivaran: ${complaint.details}. `;
     if (complaint.coachNo) complaintDetails += `Coach Number: ${complaint.coachNo}. `;
     
-    const twimlUrl = `https://rail-madad-backend-p4vg.onrender.com/api/testvoice-handler/${complaintId}?category=${encodeURIComponent(complaint.category)}&subcategory=${encodeURIComponent(complaint.subCategory)}&details=${encodeURIComponent(complaintDetails)}&coach=${encodeURIComponent(complaint.coachNo || '')}&attempt=${newAttemptCount}`;
+    const twimlUrl = `https://rail-madad-backend-p4vg.onrender.com/api/test/testvoice-handler/${complaintId}?category=${encodeURIComponent(complaint.category)}&subcategory=${encodeURIComponent(complaint.subCategory)}&details=${encodeURIComponent(complaintDetails)}&coach=${encodeURIComponent(complaint.coachNo || '')}&attempt=${newAttemptCount}`;
     
     const call = await twilioClient.calls.create({
       to: staff.mobileNumber,
