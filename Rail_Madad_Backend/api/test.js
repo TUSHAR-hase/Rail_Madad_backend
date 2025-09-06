@@ -27,7 +27,26 @@ try {
   console.error("❌ Twilio initialization error:", error);
 }
 // Updated submitComplaint function with coach number handling
+export const getstatus=async (req, res) => {
+  try {
+    const { complaintId } = req.params;
+    const complaint = await Complaint.findOne({ complaintId });
 
+    if (!complaint) {
+      return res.status(404).json({ error: 'Complaint not found' });
+    }
+
+    // Return the complaint status
+    res.status(200).json({
+      complaintId: complaint.complaintId,
+      acknowledgmentReceived: complaint.acknowledgmentReceived,
+      // Include other relevant fields
+    });
+  } catch (error) {
+    console.error('Server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 export const submitComplaint = async (req, res) => {
   try {
     console.log("twilioClient status:", twilioClient ? "✅ INITIALIZED" : "❌ NOT INITIALIZED");
