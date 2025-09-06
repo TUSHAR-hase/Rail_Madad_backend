@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 import twilio from "twilio";
 import Complaint from "../schemas/complaintschema.js";
 import Staff from "../schemas/staffschema.js";
-import User from "../schemas/userschemas.js";
+import Userr from "../schemas/userschemas.js";
+
 
 const { VoiceResponse } = twilio;
 
@@ -82,9 +83,9 @@ let userPhone = null;
     let user = null;
     
     if (req.userId) {
-      user = await User.findById(req.userId);
+      user = await Userr.findById(req.userId);
     } else if (pnrNumber) {
-      user = await User.findOne({ pnrNumber });
+      user = await Userr.findOne({ pnrNumber });
     }
 
     if (user) {

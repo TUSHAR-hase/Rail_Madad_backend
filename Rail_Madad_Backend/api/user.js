@@ -2,7 +2,8 @@ import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import express from "express";
 import bcrypt from "bcryptjs";
-import User from "../schemas/userschemas.js";
+import Userr from "../schemas/userschemas";
+
 
 
 
@@ -50,7 +51,7 @@ export const register = async (req, res) => {
     const { name, email, password, phone } = req.body;
 
     // Check existing user
-    let existingUser = await User.findOne({ email });
+    let existingUser = await Userr.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -62,7 +63,7 @@ export const register = async (req, res) => {
     const otp = Math.floor(1000 + Math.random() * 9000);
 
     // Create new user
-    const user = new User({
+    const user = new Userr({
       name,
       email,
       password: hashedPassword,
@@ -88,7 +89,7 @@ export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
-    let user = await User.findOne({ email });
+    let user = await Userr.findOne({ email });
     if (!user) return res.status(400).json({ message: "User not found" });
 
     if (user.isVerifiedOtp) {
@@ -117,7 +118,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    let user = await User.findOne({ email });
+    let user = await Userr.findOne({ email });
     if (!user) return res.status(401).json({ message: "Invalid email or password" });
 
     const isValidPassword = await bcrypt.compare(password, user.password);
