@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser';
 import userauth from './routes/userroute.js'
 import complain from './routes/complaintroute.js'
 import testapi from './routes/test.js'
+import { submitComplaint } from './api/complaint.js';
+import { authMiddleware } from './middleware/authMiddleware.js';
 dotenv.config();
 
 const app = express();
@@ -32,7 +34,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.post("/api/complaints", authMiddleware, submitComplaint);
 app.use('/api/railmadad', userauth);
 app.use('/api/send/complainto', complain);
 app.use('/api/test', testapi);
