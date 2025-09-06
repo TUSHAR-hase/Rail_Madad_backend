@@ -83,7 +83,7 @@ let userPhone = null;
 
     // Category to Hindi mapping for voice call
     const categoryHindi = {
-      "Coach Maintenance": "डिब्बा और सीट",
+      "coach_maintenance": "डिब्बा और सीट",
       "Cleanliness": "सफाई",
       "Food & Catering": "खाना और कैटरिंग", 
       "AC & Temperature": "एयर कंडीशनर और तापमान",
@@ -99,7 +99,7 @@ let userPhone = null;
 
     // Department mapping
     const departmentMap = {
-      "Coach Maintenance": "Coach Maintenance",
+      "coach_maintenance": "Coach Maintenance",
       "Cleanliness": "Cleaning",
       "Food & Catering": "Catering",
       "AC & Temperature": "Engineering", 
