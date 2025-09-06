@@ -14,7 +14,7 @@ const complaintSchema = new mongoose.Schema({
   },
     userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",   // Users model ka naam
+    ref: "users",   // Users model ka naam
     required: true   // Agar aapko compulsory chahiye to true rakho
   },
   pnrNumber: String,
