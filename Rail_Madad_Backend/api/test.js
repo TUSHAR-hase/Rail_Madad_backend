@@ -50,6 +50,7 @@ export const getstatus=async (req, res) => {
 }
 export const submitComplaint = async (req, res) => {
   try {
+    
     console.log("twilioClient status:", twilioClient ? "✅ INITIALIZED" : "❌ NOT INITIALIZED");
     console.log("TWILIO SID:", process.env.TWILIO_ACCOUNT_SID);
 console.log("TWILIO TOKEN:", process.env.TWILIO_AUTH_TOKEN);
@@ -64,8 +65,11 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
   .then(acc => console.log("Auth ✅", acc.friendlyName))
   .catch(err => console.error("Auth ❌", err));
     // CHANGE 1: Add coachNumber to destructuring
-    const { category, subCategory, details, trainNo, coachNo, pnrNumber ,userId} = req.body;
-    console.log(userId)
+      const { category, subCategory, details, trainNo, coachNo, pnrNumber, userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "userId is required" });
+    }
     // Validate required fields
     if (!category || !subCategory || !trainNo) {
       return res.status(400).json({

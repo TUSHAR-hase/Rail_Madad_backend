@@ -6,37 +6,33 @@ const complaintSchema = new mongoose.Schema({
   subCategory: String,
   details: String,
   trainNo: String,
-  
+
   // CHANGE 25: Add coachNumber field
   coachNo: {
     type: String,
-   
+
   },
-    userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",   // Users model ka naam
-    required: true   // Agar aapko compulsory chahiye to true rakho
-  },
+
   pnrNumber: String,
   department: String,
   status: String,
   userPhone: {
-  type: String,
-  required: false
-},
+    type: String,
+    required: false
+  },
 
   // CHANGE 26: Add improved call tracking fields
   maxCallAttempts: {
     type: Number,
     default: 3
   },
-      resolved: { type: Boolean, default: false }, 
-    resolvedAt: { type: Date, default: null },
-    resolutionTimeMinutes: { type: Number, default: null },
-    resolvedWithin5Min: { type: Boolean, default: false },
+  resolved: { type: Boolean, default: false },
+  resolvedAt: { type: Date, default: null },
+  resolutionTimeMinutes: { type: Number, default: null },
+  resolvedWithin5Min: { type: Boolean, default: false },
   lastCallTime: Date,
   lastRetryReason: String,
-  
+
   // CHANGE 27: Add call history array
   callHistory: [{
     attempt: Number,
@@ -48,7 +44,7 @@ const complaintSchema = new mongoose.Schema({
       default: false
     }
   }],
-  
+
   // CHANGE 28: Add SMS tracking fields
   smsBackupTime: Date,
   notificationMethod: {
@@ -56,14 +52,19 @@ const complaintSchema = new mongoose.Schema({
     enum: ['IVR_CALL', 'SMS_FALLBACK', 'BOTH'],
     default: 'IVR_CALL'
   },
-  
+
   notificationErrors: {
     type: Boolean,
     default: false
   },
-  
+
   lastErrorTime: Date,
-  
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",  // <-- same as User model
+    required: true
+  }
+  ,
   // CHANGE 29: Add acknowledgment tracking
   acknowledgedBy: String,
   acknowledgedMethod: {
@@ -71,7 +72,7 @@ const complaintSchema = new mongoose.Schema({
     enum: ['IVR', 'SMS', 'MANUAL'],
     default: 'IVR'
   },
-  
+
   // Existing fields...
   callAttempts: Number,
   acknowledgmentReceived: Boolean,
@@ -97,7 +98,7 @@ const complaintSchema = new mongoose.Schema({
 complaintSchema.index({ acknowledgmentReceived: 1, createdAt: 1 });
 complaintSchema.index({ callAttempts: 1, status: 1 });
 complaintSchema.index({ trainNo: 1, coachNumber: 1 });
-const Complaint =mongoose.models.Complaints|| mongoose.model("Complaints", complaintSchema);
+const Complaint = mongoose.models.Complaints || mongoose.model("Complaints", complaintSchema);
 
 
 export default Complaint;
