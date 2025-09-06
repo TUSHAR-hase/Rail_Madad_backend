@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/railmadad', userauth);
 app.use('/api/send/complainto', complain);
 app.use('/api/test', testapi);
-app.use('/api/image', );
+app.use('/api/image',imageapi );
 
 app.listen(port, () => {
   connectDB();
