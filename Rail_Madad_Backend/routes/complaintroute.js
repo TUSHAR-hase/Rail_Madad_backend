@@ -5,7 +5,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // POST /api/complaints
-router.post("/complaint/:userId",authMiddleware ,submitComplaint);
+router.post("/complaint/:userId" ,submitComplaint);
 router.get("/getcomplaint",getAllcomplaint);
 
 router.put("/complaint/:complaintId/resolved", statusupdate);
