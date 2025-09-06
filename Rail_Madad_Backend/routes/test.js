@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/voice-handler/:complaintId', voiceHandler);
 router.post('/voice-response/:complaintId',voiceResponse);
 router.post('/call-status/:complaintId', callStatusHandler);
-router.post("/complaint", submitComplaint);
+router.post("/complaint/:userId", submitComplaint);
 router.get("/getcomplaint/:complaintId",getstatus);
 
 
