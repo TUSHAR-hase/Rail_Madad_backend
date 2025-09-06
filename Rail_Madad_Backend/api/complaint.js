@@ -99,7 +99,7 @@ export const submitComplaint = async (req, res) => {
   try {
     console.log("twilioClient status:", twilioClient ? "✅ INITIALIZED" : "❌ NOT INITIALIZED");
 
-    const { category, subCategory, details, trainNo, coachNo, pnrNumber } = req.body;
+    const { category, subCategory, details, trainNo, coachNo, pnrNumber,userId } = req.body;
 
     // Validate required fields
     if (!category || !subCategory || !trainNo) {
@@ -150,6 +150,7 @@ export const submitComplaint = async (req, res) => {
       details,
       trainNo,
       coachNo,
+      userId,
       pnrNumber,
       department,
       status: "Pending"
