@@ -79,12 +79,12 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
         message: "Category, subcategory, and train number are required"
       });
     }
-    console.log(req.body)
+    // console.log(req.body)
 let userPhone = null;
     let user = null;
     
-    if (req.userId) {
-      user = await Userr.findById(req.userId);
+    if (userId) {
+      user = await Userr.findById(userId);
     } else if (pnrNumber) {
       user = await Userr.findOne({ pnrNumber });
     }
@@ -618,4 +618,3 @@ setInterval(async () => {
     console.error("Background check error:", error);
   }
 }, 120000); // Check every 2 minutes instead of 1 minute
-// 
