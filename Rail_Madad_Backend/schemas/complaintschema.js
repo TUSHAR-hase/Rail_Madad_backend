@@ -22,7 +22,10 @@ const complaintSchema = new mongoose.Schema({
     type: Number,
     default: 3
   },
-  
+      resolved: { type: Boolean, default: false }, 
+    resolvedAt: { type: Date, default: null },
+    resolutionTimeMinutes: { type: Number, default: null },
+    resolvedWithin5Min: { type: Boolean, default: false },
   lastCallTime: Date,
   lastRetryReason: String,
   
