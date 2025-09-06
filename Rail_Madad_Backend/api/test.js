@@ -30,7 +30,7 @@ try {
 export const getstatus=async (req, res) => {
   try {
     const { complaintId } = req.params;
-    const complaint = await Complaint.findOne({ complaintId });
+    const complaint = await Complaint.findOne({ _id:complaintId });
 
     if (!complaint) {
       return res.status(404).json({ error: 'Complaint not found' });
