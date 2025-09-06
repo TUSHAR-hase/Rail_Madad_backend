@@ -73,7 +73,7 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
         message: "Category, subcategory, and train number are required"
       });
     }
-    print(req.body)
+    console.log(req.body)
 let userPhone = null;
     let user = null;
     
