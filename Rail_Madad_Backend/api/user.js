@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import express from "express";
 import bcrypt from "bcryptjs";
-import Userr from "../schemas/userschemas";
+import Userr from "../schemas/userschemas.js";
 
 
 
