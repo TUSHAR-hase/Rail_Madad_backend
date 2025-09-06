@@ -34,7 +34,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.post("/api/complaints", authMiddleware, submitComplaint);
+// app.post("/api/complaints", authMiddleware, submitComplaint);
 app.use('/api/railmadad', userauth);
 app.use('/api/send/complainto', complain);
 app.use('/api/test', testapi);
