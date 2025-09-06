@@ -16,7 +16,11 @@ const complaintSchema = new mongoose.Schema({
   pnrNumber: String,
   department: String,
   status: String,
-  
+  userPhone: {
+  type: String,
+  required: false
+},
+
   // CHANGE 26: Add improved call tracking fields
   maxCallAttempts: {
     type: Number,

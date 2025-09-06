@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import twilio from "twilio";
 import Complaint from "../schemas/complaintschema.js";
 import Staff from "../schemas/staffschema.js";
+import User from "../schemas/userschemas.js";
 // import { VoiceResponse } from 'twilio';
 const { VoiceResponse } = twilio;
 
@@ -72,7 +73,19 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
         message: "Category, subcategory, and train number are required"
       });
     }
+    print(req.body)
+let userPhone = null;
+    let user = null;
+    
+    if (req.userId) {
+      user = await User.findById(req.userId);
+    } else if (pnrNumber) {
+      user = await User.findOne({ pnrNumber });
+    }
 
+    if (user) {
+      userPhone = user.phone;
+    }
     // CHANGE 2: Add coachNumber validation for specific categories
     // if (['Coach & Seat', 'Cleanliness', 'AC & Temperature'].includes(category) && !coachNumber) {
     //   return res.status(400).json({
@@ -124,6 +137,7 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
       coachNo, // Add this field
       pnrNumber,
       department,
+      userPhone,
       status: "Pending",
       callAttempts: 0,
       acknowledgmentReceived: false,
