@@ -8,7 +8,7 @@ router.post('/voice-handler/:complaintId', voiceHandler);
 router.post('/voice-response/:complaintId',voiceResponse);
 router.post('/call-status/:complaintId', callStatusHandler);
 router.post("/complaint", submitComplaint);
-router.get("getcomplaint/:complaintId",getstatus);
+router.get("/getcomplaint/:complaintId",getstatus);
 
 
 export default router;
