@@ -51,7 +51,8 @@ export const getstatus=async (req, res) => {
 }
 export const submitComplaint = async (req, res) => {
   try {
-    const userId = req.user._id;
+    console.log(req.user);
+    const userId = req.user.id;
     console.log("twilioClient status:", twilioClient ? "✅ INITIALIZED" : "❌ NOT INITIALIZED");
     console.log("TWILIO SID:", process.env.TWILIO_ACCOUNT_SID);
 console.log("TWILIO TOKEN:", process.env.TWILIO_AUTH_TOKEN);
