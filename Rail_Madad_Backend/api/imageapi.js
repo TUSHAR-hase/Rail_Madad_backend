@@ -134,7 +134,7 @@ let userPhone = null;
     });
 
     await complaint.save();
-
+console.log("Complaint saved:", complaint);
     // Find staff
     let staff = await Staff.findOne({ department, trainNo });
     console.log(`Staff found for train ${trainNo}:`, staff);
