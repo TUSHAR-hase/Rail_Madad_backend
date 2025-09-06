@@ -65,7 +65,7 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
   .catch(err => console.error("Auth ❌", err));
     // CHANGE 1: Add coachNumber to destructuring
     const { category, subCategory, details, trainNo, coachNo, pnrNumber ,userId} = req.body;
-    console.log(req.body)
+    console.log(userId)
     // Validate required fields
     if (!category || !subCategory || !trainNo) {
       return res.status(400).json({
