@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import userauth from './routes/userroute.js'
 import complain from './routes/complaintroute.js'
 import testapi from './routes/test.js'
+import imageapi from './routes/image.js'
 import { submitComplaint } from './api/complaint.js';
 import { authMiddleware } from './middleware/authMiddleware.js';
 dotenv.config();
@@ -38,6 +39,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/railmadad', userauth);
 app.use('/api/send/complainto', complain);
 app.use('/api/test', testapi);
+app.use('/api/image', );
+
 app.listen(port, () => {
   connectDB();
   console.log(port);

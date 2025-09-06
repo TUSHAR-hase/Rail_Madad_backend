@@ -29,26 +29,7 @@ try {
   console.error("❌ Twilio initialization error:", error);
 }
 // Updated submitComplaint function with coach number handling
-export const getstatus=async (req, res) => {
-  try {
-    const { complaintId } = req.params;
-    const complaint = await Complaint.findOne({ _id:complaintId });
 
-    if (!complaint) {
-      return res.status(404).json({ error: 'Complaint not found' });
-    }
-
-   
-    res.status(200).json({
-      complaintId: complaint.complaintId,
-     resolved: complaint.resolved,
-      
-    });
-  } catch (error) {
-    console.error('Server error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-}
 export const submitComplaint = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -67,13 +48,13 @@ client.api.accounts(process.env.TWILIO_ACCOUNT_SID)
   .then(acc => console.log("Auth ✅", acc.friendlyName))
   .catch(err => console.error("Auth ❌", err));
     // CHANGE 1: Add coachNumber to destructuring
-      const { category, subCategory, details, trainNo, coachNo, pnrNumber} = req.body;
+      const {  category,details, trainNo, coachNo, pnrNumber} = req.body;
 
     if (!userId) {
       return res.status(400).json({ success: false, message: "userId is required" });
     }
     // Validate required fields
-    if (!category || !subCategory || !trainNo) {
+    if ( !category ||!trainNo) {
       return res.status(400).json({
         success: false,
         message: "Category, subcategory, and train number are required"
@@ -137,7 +118,7 @@ let userPhone = null;
     // CHANGE 3: Save complaint with coachNumber
     const complaint = new Complaint({
       category,
-      subCategory,
+    //   subCategory,
       details,
       trainNo,
       coachNo, // Add this field
@@ -165,7 +146,7 @@ let userPhone = null;
 
     if (staff && twilioClient) {
       // CHANGE 4: Pass coachNumber to IVR call
-      await initiateIVRCall(complaint._id, staff, category, categoryHindi, subCategory, details, coachNo);
+      await initiateIVRCall(complaint._id, staff, category, categoryHindi, details, coachNo);
     } else {
       console.log(`❌ No staff found for department: ${department} or Twilio not configured`);
       complaint.status = "Pending - No staff assigned";
@@ -182,7 +163,7 @@ let userPhone = null;
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-async function initiateIVRCall(complaintId, staff, category, categoryHindi, subCategory, details, coachNo) {
+async function initiateIVRCall(complaintId, staff, category, categoryHindi,  details, coachNo) {
   try {
     const hindiCategory = categoryHindi[category] || category;
     
@@ -192,7 +173,7 @@ async function initiateIVRCall(complaintId, staff, category, categoryHindi, subC
     if (coachNo) complaintDetails += `Coach Number: ${coachNo}. `;
     
     // Use proper API routes
-    const twimlUrl = `https://rail-madad-backend-p4vg.onrender.com/api/test/voice-handler/${complaintId}?category=${encodeURIComponent(hindiCategory)}&subcategory=${encodeURIComponent(subCategory)}&details=${encodeURIComponent(complaintDetails)}&coach=${encodeURIComponent(coachNo || '')}`;
+    const twimlUrl = `https://rail-madad-backend-p4vg.onrender.com/api/test/voice-handler/${complaintId}?category=${encodeURIComponent(hindiCategory)}&details=${encodeURIComponent(complaintDetails)}&coach=${encodeURIComponent(coachNo || '')}`;
     
     const call = await twilioClient.calls.create({
       to: staff.mobileNumber,
@@ -230,14 +211,14 @@ async function initiateIVRCall(complaintId, staff, category, categoryHindi, subC
     });
   } catch (err) {
     console.error("❌ IVR Call Error:", err);
-    await fallbackToSMS(complaintId, staff, categoryHindi, subCategory, details, coachNo);
+    await fallbackToSMS(complaintId, staff, categoryHindi, details, coachNo);
   }
 }
 // Update voiceHandler function
 export const voiceHandler = async (req, res) => {
   try {
     const { complaintId } = req.params;
-    const { category, subcategory, details, coach } = req.query;
+    const { category, details, coach } = req.query;
     
     // Check if complaint is already acknowledged
     const complaint = await Complaint.findById(complaintId);
@@ -263,7 +244,7 @@ export const voiceHandler = async (req, res) => {
     });
     
     // Include coach number in voice message
-    let voiceMessage = `Namaskar. Train complaint notification. Category: ${category}. Problem: ${subcategory}.`;
+    let voiceMessage = `Namaskar. Train complaint notification. Category: ${category}.`;
     if (coach) voiceMessage += ` Coach Number: ${coach}.`;
     if (details) voiceMessage += ` ${details}`;
     voiceMessage += ' Press 1 to hear again, Press 2 to confirm receipt and resolve complaint.';
@@ -274,7 +255,7 @@ export const voiceHandler = async (req, res) => {
     }, voiceMessage);
     
     // If no input, retry the menu
-    twiml.redirect(`https://rail-madad-backend-p4vg.onrender.com/api/test/voice-handler/${complaintId}?category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}&details=${encodeURIComponent(details)}&coach=${encodeURIComponent(coach || '')}`);
+    twiml.redirect(`https://rail-madad-backend-p4vg.onrender.com/api/test/voice-handler/${complaintId}?category=${encodeURIComponent(category)}details=${encodeURIComponent(details)}&coach=${encodeURIComponent(coach || '')}`);
     
     res.type('text/xml');
     res.send(twiml.toString());
@@ -480,7 +461,7 @@ async function retryCall(complaintId) {
     if (complaint.details) complaintDetails += `Vivaran: ${complaint.details}. `;
     if (complaint.coachNo) complaintDetails += `Coach Number: ${complaint.coachNo}. `;
     
-    const twimlUrl = `https://rail-madad-backend-p4vg.onrender.com/api/test/testvoice-handler/${complaintId}?category=${encodeURIComponent(complaint.category)}&subcategory=${encodeURIComponent(complaint.subCategory)}&details=${encodeURIComponent(complaintDetails)}&coach=${encodeURIComponent(complaint.coachNo || '')}&attempt=${newAttemptCount}`;
+    const twimlUrl = `https://rail-madad-backend-p4vg.onrender.com/api/test/testvoice-handler/${complaintId}?category=${encodeURIComponent(complaint.category)}&details=${encodeURIComponent(complaintDetails)}&coach=${encodeURIComponent(complaint.coachNo || '')}&attempt=${newAttemptCount}`;
     
     const call = await twilioClient.calls.create({
       to: staff.mobileNumber,
@@ -525,7 +506,7 @@ async function retryCall(complaintId) {
         });
         
         if (staff) {
-          await fallbackToSMS(complaintId, staff, "शिकायत", complaint.subCategory, complaint.details, complaint.coachNo);
+          await fallbackToSMS(complaintId, staff, "शिकायत",  complaint.details, complaint.coachNo);
         }
       }
     } catch (smsError) {
@@ -535,7 +516,7 @@ async function retryCall(complaintId) {
 }
 
 // CHANGE 20: Improved Fallback SMS Function
-async function fallbackToSMS(complaintId, staff, category, subCategory, details, coachNo) {
+async function fallbackToSMS(complaintId, staff, category, details, coachNo) {
   try {
     // CHANGE 21: Include coach number in SMS
     let message = `नई शिकायत: ${subCategory} श्रेणी: ${category}.`;
@@ -610,7 +591,7 @@ setInterval(async () => {
         
         if (staff) {
           console.log(`Sending SMS fallback for complaint ${complaint._id}`);
-          await fallbackToSMS(complaint._id, staff, "शिकायत", complaint.subCategory, complaint.details, complaint.coachNo);
+          await fallbackToSMS(complaint._id, staff, "शिकायत", complaint.details, complaint.coachNo);
         }
       }
     }
