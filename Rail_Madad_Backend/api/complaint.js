@@ -32,7 +32,7 @@ export const getAllcomplaint =  async (req, res) => {
     const recentComplaints = await Complaint.find()
       .sort({ createdAt: -1 }) // Sort by most recent
       .limit(10) // Limit to 10 complaints
-      .select('category subCategory status trainNo createdAt'); // Select only necessary fields
+      .select('category subCategory status trainNo createdAt,resolved'); // Select only necessary fields
     
     res.status(200).json({
       success: true,
