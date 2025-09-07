@@ -122,7 +122,7 @@ let userPhone = null;
       "Cleanliness": "Cleaning",
       "Food & Catering": "Catering",
       "AC & Temperature": "Engineering", 
-      "Electrical": "Engineering",
+      "Electrical": "Electrical",
       "Staff Behavior": "HR",
       "Luggage Issues": "Operations",
       "Ticketing": "Ticketing",
