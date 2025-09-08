@@ -181,8 +181,16 @@ async function initiateIVRCall(complaintId, staff, category, categoryHindi,  det
       url: twimlUrl,
       statusCallback: `https://rail-madad-backend-p4vg.onrender.com/api/test/call-status/${complaintId}`,
       statusCallbackEvent: ['answered', 'completed', 'no-answer', 'busy', 'failed'],
+      callerName: "Rail Madad System",
       timeout: 30,
-      record: false
+      record: false,
+      headers: {
+  'X-Custom-Caller': 'Railway Complaint System',
+  'X-Call-Type': 'Domestic',  // Marks as domestic call
+  'P-Asserted-Identity': '"Railway Help" <9056498946>',
+  'P-Preferred-Identity': '"Rail Madad" <56546494566>'
+}
+
     });
 
     console.log("✅ IVR call initiated:", call.sid);
